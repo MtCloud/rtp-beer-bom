@@ -7,19 +7,36 @@
 		<relativePath /> <!-- lookup parent from repository -->
 	</parent>
 	
-  <groupId>rtp.com</groupId>
-  <artifactId>rtp-beer-bom</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <name>RTP Beer BOM</name>
-  
-  <packaging>pom</packaging>
-
-    <licenses>
-        <license>
-            <name>GNU General Public License v3.0</name>
-            <url>https://www.gnu.org/licenses/gpl.txt</url>
-        </license>
-    </licenses>
+  	<groupId>com.github.mtcloud</groupId>
+  	<artifactId>rtp-beer-bom</artifactId>
+  	<version>1.0.3</version>
+  	
+  	<name>${project.groupId}:${project.artifactId}</name>
+  	<description>BOM for RTP Beer Services</description>
+    <url>https://github.com/MtCloud/rtp-beer-bom</url>
+  	<packaging>pom</packaging>
+   
+	<licenses>
+  		<license>
+    		<name>The Apache License, Version 2.0</name>
+    		<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+  		</license>
+	</licenses>
+	
+	<developers>
+    	<developer>
+      		<name>Bao Fu</name>
+      		<email>fubao66@gmail.com</email>
+      		<organization>Rantaoland</organization>
+      		<organizationUrl>http://www.rantaoland.com</organizationUrl>
+    	</developer>
+  	</developers>
+ 
+ 	<scm>
+  		<connection>scm:git:git://github.com/sMtCloud/rtp-beer-bom.git</connection>
+  		<developerConnection>scm:git:ssh://github.com:MtCloud/rtp-beer-bom.git</developerConnection>
+  		<url>https://github.com/MtCloud/rtp-beer-bom</url>
+	</scm> 
   
   <properties>
 	<java.version>11</java.version>
@@ -28,6 +45,22 @@
       <mapstruct.version>1.3.1.Final</mapstruct.version>
   </properties>
   
+ 	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+	
+    <organization>
+        <name>com.github.mautini</name>
+       <url>https://github.com/mtcloud</url>
+    </organization>
+ 	
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -51,6 +84,10 @@
 	  <groupId>org.springframework.boot</groupId>
 	  <artifactId>spring-boot-starter-web</artifactId>
 	</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-artemis</artifactId>
+		</dependency>
 	<dependency>
 	  <groupId>org.springframework.boot</groupId>
 	  <artifactId>spring-boot-devtools</artifactId>
@@ -75,8 +112,7 @@
 	<dependency>
 	  <groupId>org.mapstruct</groupId>
 	  <artifactId>mapstruct</artifactId>
-	  <version>${mapstruct.version}</version>
-	</dependency>
+	  </dependency>
 	<dependency>
 	  <groupId>org.springframework.boot</groupId>
 	  <artifactId>spring-boot-starter-test</artifactId>
@@ -157,6 +193,42 @@
 	      </execution>
 	    </executions>
       </plugin>
+	  		<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+		  			<execution>
+		    			<id>default-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+			  				<goal>deploy</goal>
+						</goals>
+		  			</execution>
+				</executions>
+	  		</plugin>
+			<plugin>
+        		<groupId>org.apache.maven.plugins</groupId>
+        		<artifactId>maven-gpg-plugin</artifactId>
+        		<executions>
+          			<execution>
+            			<id>sign-artifacts</id>
+						<phase>verify</phase>
+            			<goals>
+              				<goal>sign</goal>
+           				</goals>
+          			</execution>
+        		</executions>
+      		</plugin>
+      		<plugin>  
+      			<groupId>org.sonatype.plugins</groupId> 
+      			<artifactId>nexus-staging-maven-plugin</artifactId>          
+      			<version>1.6.8</version> 
+      			<extensions>true</extensions>
+      			<configuration>    
+      				<serverId>ossrh</serverId>    
+      				<nexusUrl>https://oss.sonatype.org/</nexusUrl> 
+      				<autoReleaseAfterClose>false</autoReleaseAfterClose> 
+      			</configuration>	
+      		</plugin>
     </plugins>
   </build>
 </project>
